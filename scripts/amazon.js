@@ -29,17 +29,17 @@ function populateProductContainer(){
                 </div>
 
                 <div class="product-quantity-container">
-                    <select>
-                    <option selected value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
+                    <select class = 'js-select-quantity'>
+                        <option selected value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
                     </select>
                 </div>
 
@@ -50,7 +50,11 @@ function populateProductContainer(){
                     Added
                 </div>
 
-                <button class="add-to-cart-button button-primary">
+                <button class="add-to-cart-button button-primary js-add-to-cart"
+                data-product-name ="${product.name}"
+                data-product-price = "${product.priceCents}"
+                data-product-id = "${product.id}"
+                >
                     Add to Cart
                 </button>
             </div>
@@ -62,4 +66,45 @@ function populateProductContainer(){
 
 }
 
+
+
+
+
 populateProductContainer();
+
+
+
+document.querySelectorAll('.js-add-to-cart').forEach((button,index)=>{
+    button.addEventListener('click',()=>{
+        console.log('Product Added');
+
+        const productID = button.dataset.productId;
+        const prodName = button.dataset.productName;
+        const selectedQuantity = parseInt(button.parentElement.querySelector('.js-select-quantity').value);
+        const price = button.dataset.productPrice;
+        
+
+
+    
+        let itemIndex = cart.findIndex((item)=>{
+            return item.productID === productID;
+        })
+
+        if(itemIndex === -1){
+            cart.push(
+            {
+                productID:productID,
+                productName: prodName,
+                quantity: selectedQuantity,
+                price:price
+            }
+        );
+        }
+        else{
+            cart[itemIndex].quantity += selectedQuantity;
+        };
+        
+        console.log(cart);
+    })
+})
+
